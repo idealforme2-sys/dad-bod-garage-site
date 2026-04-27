@@ -52,8 +52,6 @@ function navigateToRoute(route, options = {}) {
   }
 
   const transitionEl = document.getElementById("transition-wrapper");
-  const transitionText = transitionEl.querySelector(".transition-text");
-  const transitionSubtext = transitionEl.querySelector(".transition-subtext");
   const canTransition = transitionEl && typeof gsap !== "undefined" && !reducedMotion.matches;
   
   isRouting = true;
@@ -63,21 +61,18 @@ function navigateToRoute(route, options = {}) {
     const tl = gsap.timeline({
       onComplete: () => {
         // Complete the transition
-        gsap.to(transitionEl, { y: "-100%", duration: 0.6, ease: "expo.inOut", delay: 0.5, onComplete: () => {
-          gsap.set(transitionEl, { y: "100%" });
+        gsap.set(transitionEl, { transformOrigin: "top" });
+        gsap.to(transitionEl, { scaleY: 0, duration: 0.7, ease: "power4.inOut", onComplete: () => {
           isRouting = false;
           pendingRoute = null;
         }});
-        
-        gsap.to([transitionText, transitionSubtext], { opacity: 0, duration: 0.3, delay: 0.4 });
       }
     });
 
-    // 1. Slide orange panel down
-    tl.to(transitionEl, { y: "0%", duration: 0.6, ease: "expo.inOut" })
-      // 2. Show text
-      .to([transitionText, transitionSubtext], { opacity: 1, duration: 0.4, stagger: 0.1 }, "-=0.2")
-      // 3. Switch content while covered
+    // 1. Slide orange panel up (Open)
+    gsap.set(transitionEl, { transformOrigin: "bottom", scaleY: 0 });
+    tl.to(transitionEl, { scaleY: 1, duration: 0.7, ease: "power4.inOut" })
+      // 2. Switch content while covered
       .add(() => {
         if (options.prefill) quotePrefill = options.prefill;
         currentRoute = nextRoute;
@@ -86,12 +81,12 @@ function navigateToRoute(route, options = {}) {
         }
         render();
         window.scrollTo({ top: 0, behavior: "auto" });
-      }, "-=0.1");
+      });
 
     return;
   }
 
-  // Fallback for reduced motion or if GSAP is missing
+  // Fallback for reduced motion or if GSAP is missing (Brave compatibility)
   if (options.prefill) quotePrefill = options.prefill;
   currentRoute = nextRoute;
   if (options.updateHash && window.location.hash !== `#${nextRoute}`) {

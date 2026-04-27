@@ -65,7 +65,7 @@ function trustSection() {
         </div>
         <div class="grid-3 trust-cards">
           ${trustCards.map((card, index) => `
-            <article class="card trust-card ${index === 0 ? "featured" : ""}" data-animate style="--delay:${index * 200}ms">
+            <article class="card trust-card featured" data-animate style="--delay:${index * 200}ms">
               <div class="card-icon">${icon(card.icon)}</div>
               <h3>${card.title}</h3>
               <p class="text-muted">${card.body}</p>

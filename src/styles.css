@@ -230,38 +230,32 @@ img {
 .page-transition {
   position: fixed;
   inset: 0;
-  z-index: 9000;
+  z-index: 9999;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
   pointer-events: none;
   background: var(--gold);
-  transform: translateY(100%);
+  transform: scaleY(0);
+  transform-origin: bottom;
+  will-change: transform;
+}
+
+/* Add a subtle texture/gradient to the transition panel */
+.page-transition::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+  pointer-events: none;
 }
 
 .transition-text {
-  font-family: "Montserrat", sans-serif;
-  color: #111827;
-  font-size: clamp(1.5rem, 4vw, 2.5rem);
-  font-weight: 900;
-  text-transform: uppercase;
-  letter-spacing: 0.2em;
-  opacity: 0;
-  text-align: center;
+  display: none; /* Removed as per user preference */
 }
 
 .transition-subtext {
-  position: absolute;
-  bottom: 2rem;
-  left: 2rem;
-  font-family: "Montserrat", sans-serif;
-  color: rgba(17, 24, 39, 0.6);
-  font-size: 0.75rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.3em;
-  opacity: 0;
+  display: none; /* Removed as per user preference */
 }
 
 .preloader-card {
@@ -546,7 +540,7 @@ p {
   object-fit: contain;
   object-position: center;
   padding: 4px;
-  transform: none;
+  transform: translateY(-3px); /* Move up slightly as requested */
 }
 
 .brand-name {
@@ -738,8 +732,9 @@ p {
   background-image:
     linear-gradient(90deg, rgba(11, 15, 25, 0.96) 0%, rgba(11, 15, 25, 0.72) 48%, rgba(11, 15, 25, 0.55) 100%),
     url("/images to use/Coolidgerepair.jpg");
-  background-size: cover;
-  background-position: 50% 58%;
+  background-size: 110%; /* Zoomed in slightly as requested */
+  background-position: center 30%;
+  background-repeat: no-repeat;
   overflow: hidden;
 }
 
@@ -1174,18 +1169,25 @@ p {
   font-weight: 900;
 }
 
-.trust-cards .trust-card {
-  transition: opacity 0.65s ease, transform 0.65s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.2s ease, box-shadow 0.2s ease;
+.trust-card {
+  position: relative;
+  background: var(--panel-glass);
+  border: 1px solid var(--line);
+  padding: clamp(1.8rem, 4vw, 2.8rem);
+  text-align: center;
 }
 
-.motion-ready .trust-cards .trust-card {
-  opacity: 0;
-  transform: translateY(-30px) scale(0.96);
-}
-
-.motion-ready .trust-cards .trust-card.is-visible {
-  opacity: 1;
-  transform: translateY(0) scale(1);
+.trust-card.featured::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px; /* Slightly thicker */
+  background: var(--gold);
+  box-shadow: 0 0 20px var(--gold), 0 0 40px rgba(245, 179, 1, 0.4); /* Stronger glow */
+  border-radius: 2px 2px 0 0;
+  z-index: 2;
 }
 
 .section-head {
@@ -2361,8 +2363,16 @@ input:focus,
   height: 86px;
 }
 
+.footer-brand-panel .brand-logo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 6px;
+  transform: translateY(-2px); /* Alignment tweak */
+}
+
 .footer-brand-panel .brand {
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 .footer-brand-panel .brand-name {
@@ -2665,6 +2675,12 @@ input:focus,
 
   .marquee-track span {
     font-size: 1.5rem;
+    animation: marquee-css 20s linear infinite; /* CSS fallback */
+  }
+
+  @keyframes marquee-css {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
   }
 
   .trust-head h2 {

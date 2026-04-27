@@ -91,30 +91,30 @@ export const services = [
 ];
 
 export const specialties = [
- {
- icon: "fa-bus",
- title: "Fleet & School Buses",
- image: "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&q=80",
- service: "Fleet / School Bus",
- body: "Preventative maintenance and safety-focused repairs for fleets, diesel work, and school bus service.",
- bullets: ["Preventative maintenance", "Safety inspections", "Diesel repair"]
- },
- {
- icon: "fa-car-side",
- title: "Classic & Muscle Cars",
- image: "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&q=80",
- service: "Classic / Muscle Car",
- body: "Vintage vehicles get careful diagnosis, respectful handling, and practical reliability upgrades.",
- bullets: ["Restoration support", "Performance upgrades", "Custom tuning"]
- },
- {
- icon: "fa-van-shuttle",
- title: "RV & Large Vehicles",
- image: "https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?auto=format&fit=crop&q=80",
- service: "RV / Large Vehicle",
- body: "Large vehicle diagnostics for trip prep, electrical faults, A/C concerns, and drivability problems.",
- bullets: ["Engine diagnostics", "A/C and electrical", "Chassis repair"]
- }
+  {
+    icon: "fa-bus",
+    title: "Fleet & School Buses",
+    image: "/images/bus-repair.png",
+    service: "Fleet / School Bus",
+    body: "Preventative maintenance and safety-focused repairs for fleets, diesel work, and school bus service.",
+    bullets: ["Preventative maintenance", "Safety inspections", "Diesel repair"]
+  },
+  {
+    icon: "fa-car-side",
+    title: "Classic & Muscle Cars",
+    image: "/images/muscle-car-repair.png",
+    service: "Classic / Muscle Car",
+    body: "Vintage vehicles get careful diagnosis, respectful handling, and practical reliability upgrades.",
+    bullets: ["Restoration support", "Performance upgrades", "Custom tuning"]
+  },
+  {
+    icon: "fa-van-shuttle",
+    title: "RV & Large Vehicles",
+    image: "/images/rv-repair.png",
+    service: "RV / Large Vehicle",
+    body: "Large vehicle diagnostics for trip prep, electrical faults, A/C concerns, and drivability problems.",
+    bullets: ["Engine diagnostics", "A/C and electrical", "Chassis repair"]
+  }
 ];
 
 export const symptoms = {

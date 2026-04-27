@@ -60,7 +60,14 @@
     </div>
 
     <div id="app"></div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/gsap.min.js"></script>
+    <script>
+      // Fallback if GSAP fails to load (Brave Shields etc)
+      if (typeof gsap === 'undefined') {
+        console.warn('GSAP failed to load. Falling back to CSS transitions.');
+        document.documentElement.classList.add('no-gsap');
+      }
+    </script>
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>
