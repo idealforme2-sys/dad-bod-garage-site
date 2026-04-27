@@ -1,0 +1,439 @@
+- generic [active] [ref=e1]:
+  - link "Skip to content" [ref=e2]:
+    - /url: "#app"
+  - generic [ref=e3]:
+    - img "Dad Bod Garage" [ref=e4]
+    - generic [ref=e5]:
+      - generic [ref=e6]: "14"
+      - text: "%"
+    - paragraph [ref=e9]: Initializing...
+  - generic [ref=e11]:
+    - generic [ref=e12]:
+      - generic [ref=e13]: 
+      - text: Tri-City Business Expo | April 30, 2026 @ 4:30 PM | 778 N Main St, Florence
+    - banner [ref=e14]:
+      - generic [ref=e15]:
+        - button "Dad Bod Garage" [ref=e16]:
+          - generic [ref=e18]: Dad Bod Garage
+        - navigation "Main navigation" [ref=e19]:
+          - button "Home" [ref=e20]
+          - button "Services" [ref=e21]
+          - button "About Us" [ref=e22]
+          - button "Contact" [ref=e23]
+          - link "520-752-0453" [ref=e24]:
+            - /url: tel:5207520453
+            - generic [ref=e25]: 
+            - text: 520-752-0453
+          - button "Get Estimate" [ref=e26]
+        - text: 
+      - text: 
+    - main [ref=e27]:
+      - generic [ref=e28]:
+        - generic [ref=e30]:
+          - generic [ref=e31]: The Dad Bod Guarantee
+          - heading "We Don't Guess. We diagnose, repair, verify, protect" [level=1] [ref=e32]:
+            - generic [ref=e34]: We Don't Guess.
+            - generic [ref=e36]:
+              - text: We
+              - generic "diagnose, repair, verify, protect" [ref=e37]:
+                - generic [ref=e38]:
+                  - generic [ref=e39]: Diagnose.
+                  - generic [ref=e40]: Repair.
+                  - generic [ref=e41]: Verify.
+                  - generic [ref=e42]: Protect.
+          - paragraph [ref=e43]: Stop throwing parts at your car. Experience honest, no-BS service in Coolidge, AZ. We fix it right the first time, saving you time, money, and frustration.
+          - generic [ref=e44]:
+            - button "Get An Estimate" [ref=e45]:
+              - generic [ref=e46]: 
+              - text: Get An Estimate
+            - link "Call 520-752-0453" [ref=e47]:
+              - /url: tel:5207520453
+              - generic [ref=e48]: 
+              - text: Call 520-752-0453
+        - generic [ref=e52]: Scroll to explore
+      - generic [ref=e55]:
+        - generic [ref=e56]:
+          - strong [ref=e57]: $80
+          - generic [ref=e58]: Diagnostic Credit
+        - generic [ref=e59]:
+          - strong [ref=e60]: $74.99
+          - generic [ref=e61]: A/C Special
+        - generic [ref=e62]:
+          - strong [ref=e63]: "4"
+          - generic [ref=e64]: Heavy-Duty Lanes
+        - generic [ref=e65]:
+          - strong [ref=e66]: "0"
+          - generic [ref=e67]: Guesswork
+      - region "Dad Bod Garage promises" [ref=e68]:
+        - generic [ref=e69]:
+          - generic [ref=e70]: NO BS
+          - generic [ref=e71]: HONEST MECHANIC
+          - generic [ref=e72]: ZERO UPSELLS
+          - generic [ref=e73]: DIAGNOSTICS FIRST
+          - generic [ref=e74]: FIXED RIGHT
+          - generic [ref=e75]: NO BS
+          - generic [ref=e76]: HONEST MECHANIC
+          - generic [ref=e77]: ZERO UPSELLS
+          - generic [ref=e78]: DIAGNOSTICS FIRST
+          - generic [ref=e79]: FIXED RIGHT
+          - generic [ref=e80]: NO BS
+          - generic [ref=e81]: HONEST MECHANIC
+          - generic [ref=e82]: ZERO UPSELLS
+          - generic [ref=e83]: DIAGNOSTICS FIRST
+          - generic [ref=e84]: FIXED RIGHT
+          - generic [ref=e85]: NO BS
+          - generic [ref=e86]: HONEST MECHANIC
+          - generic [ref=e87]: ZERO UPSELLS
+          - generic [ref=e88]: DIAGNOSTICS FIRST
+          - generic [ref=e89]: FIXED RIGHT
+      - generic [ref=e91]:
+        - generic [ref=e92]:
+          - heading "Precision + Honesty" [level=2] [ref=e93]:
+            - generic [ref=e94]: Precision
+            - generic [ref=e95]: +
+            - generic [ref=e96]: Honesty
+          - paragraph [ref=e97]: Most mechanics rely on trial and error at your expense. We use advanced diagnostics to pinpoint the exact issue. No upsells. No shortcuts. No wasted money.
+        - generic [ref=e98]:
+          - article [ref=e99]:
+            - generic [ref=e101]: 
+            - heading "Diagnostics First" [level=3] [ref=e102]
+            - paragraph [ref=e103]: We find the root cause before turning a wrench. Our $80 full vehicle diagnostic ensures you only pay for what actually needs fixing.
+          - article [ref=e104]:
+            - generic [ref=e106]: 
+            - heading "No-BS Approach" [level=3] [ref=e107]
+            - paragraph [ref=e108]: Clear explanations for every repair. We provide transparent advice to keep your family safe and your daily driver running flawlessly.
+          - article [ref=e109]:
+            - generic [ref=e111]: 
+            - heading "Fix It Right" [level=3] [ref=e112]
+            - paragraph [ref=e113]: Avoid repeat repairs. From complex electrical work to complete engine rebuilds, we do the job correctly the very first time.
+      - generic [ref=e114]:
+        - generic [ref=e116]: 
+        - generic [ref=e117]:
+          - generic [ref=e118]:
+            - generic [ref=e119]: How We Work
+            - heading "The Dad Bod System" [level=2] [ref=e120]
+          - generic [ref=e121]:
+            - article [ref=e122]:
+              - generic [ref=e123]: "1"
+              - heading "Deep Diagnostic" [level=3] [ref=e124]
+              - paragraph [ref=e125]: We hook up state-of-the-art tools to read your car's actual data, not just guess by sound.
+            - article [ref=e126]:
+              - generic [ref=e127]: "2"
+              - heading "No-BS Quote" [level=3] [ref=e128]
+              - paragraph [ref=e129]: We explain exactly what broke, why it broke, and give you a transparent price to fix it.
+            - article [ref=e130]:
+              - generic [ref=e131]: "3"
+              - heading "Precision Repair" [level=3] [ref=e132]
+              - paragraph [ref=e133]: Our expert technicians execute the repair using high-quality parts, fixing it right the first time.
+            - article [ref=e134]:
+              - generic [ref=e136]: 
+              - heading "Back on the Road" [level=3] [ref=e137]
+              - paragraph [ref=e138]: Final safety checks and a test drive ensure your vehicle is safe for you and your family.
+      - generic [ref=e140]:
+        - generic [ref=e141]: Don't Wait Until It Breaks Down
+        - heading "Ready To Stop Guessing?" [level=2] [ref=e142]
+        - paragraph [ref=e143]: Send us your vehicle's symptoms or call us directly. We'll outline the exact diagnostic process and get you scheduled.
+        - generic [ref=e144]:
+          - button "Get An Estimate" [ref=e145]:
+            - generic [ref=e146]: 
+            - text: Get An Estimate
+          - link "520-752-0453" [ref=e147]:
+            - /url: tel:5207520453
+            - generic [ref=e148]: 
+            - text: 520-752-0453
+      - generic [ref=e150]:
+        - generic [ref=e151]:
+          - generic [ref=e152]: Specialty Lanes
+          - heading "We Handle More Than Daily Drivers" [level=2] [ref=e153]
+          - paragraph [ref=e154]: From school buses to classic muscle cars, we have the expertise and equipment for specialty vehicles.
+        - generic [ref=e155]:
+          - article [ref=e156]:
+            - img "Fleet & School Buses" [ref=e158]
+            - generic [ref=e160]:
+              - generic [ref=e162]: 
+              - heading "Fleet & School Buses" [level=3] [ref=e163]
+              - paragraph [ref=e164]: Preventative maintenance and safety-focused repairs for fleets, diesel work, and school bus service.
+              - list [ref=e165]:
+                - listitem [ref=e166]:
+                  - generic [ref=e167]: 
+                  - text: Preventative maintenance
+                - listitem [ref=e168]:
+                  - generic [ref=e169]: 
+                  - text: Safety inspections
+                - listitem [ref=e170]:
+                  - generic [ref=e171]: 
+                  - text: Diesel repair
+              - button "Request Estimate" [ref=e172]:
+                - generic [ref=e173]: 
+                - text: Request Estimate
+          - article [ref=e174]:
+            - img "Classic & Muscle Cars" [ref=e176]
+            - generic [ref=e178]:
+              - generic [ref=e180]: 
+              - heading "Classic & Muscle Cars" [level=3] [ref=e181]
+              - paragraph [ref=e182]: Vintage vehicles get careful diagnosis, respectful handling, and practical reliability upgrades.
+              - list [ref=e183]:
+                - listitem [ref=e184]:
+                  - generic [ref=e185]: 
+                  - text: Restoration support
+                - listitem [ref=e186]:
+                  - generic [ref=e187]: 
+                  - text: Performance upgrades
+                - listitem [ref=e188]:
+                  - generic [ref=e189]: 
+                  - text: Custom tuning
+              - button "Request Estimate" [ref=e190]:
+                - generic [ref=e191]: 
+                - text: Request Estimate
+          - article [ref=e192]:
+            - img "RV & Large Vehicles" [ref=e194]
+            - generic [ref=e196]:
+              - generic [ref=e198]: 
+              - heading "RV & Large Vehicles" [level=3] [ref=e199]
+              - paragraph [ref=e200]: Large vehicle diagnostics for trip prep, electrical faults, A/C concerns, and drivability problems.
+              - list [ref=e201]:
+                - listitem [ref=e202]:
+                  - generic [ref=e203]: 
+                  - text: Engine diagnostics
+                - listitem [ref=e204]:
+                  - generic [ref=e205]: 
+                  - text: A/C and electrical
+                - listitem [ref=e206]:
+                  - generic [ref=e207]: 
+                  - text: Chassis repair
+              - button "Request Estimate" [ref=e208]:
+                - generic [ref=e209]: 
+                - text: Request Estimate
+      - generic [ref=e211]:
+        - generic [ref=e212]:
+          - generic [ref=e213]: Current Offers
+          - heading "Premium Care, Neighborhood Prices." [level=2] [ref=e214]
+          - paragraph [ref=e215]: Top-tier repair should not feel mysterious. These offers help customers start with the right inspection instead of wasting money guessing.
+          - generic [ref=e216]:
+            - article [ref=e217]:
+              - generic [ref=e219]: 
+              - generic [ref=e220]:
+                - heading "$80 Full Diagnostic Guarantee" [level=3] [ref=e221]
+                - paragraph [ref=e222]: Complete vehicle diagnostic. If you do the repair with us, the $80 is credited directly back to your bill.
+            - article [ref=e223]:
+              - generic [ref=e225]: 
+              - generic [ref=e226]:
+                - heading "$74.99 Ultimate A/C Special" [level=3] [ref=e227]
+                - paragraph [ref=e228]: Includes performance check, refrigerant level review, component inspection, and cold air verification.
+        - generic [ref=e229]:
+          - img "Mechanic tools inside a shop" [ref=e230]
+          - img "Classic car detail" [ref=e231]
+      - generic [ref=e233]:
+        - generic [ref=e234]:
+          - generic [ref=e235]: Service Lanes
+          - heading "What We Can Help With" [level=2] [ref=e236]
+          - paragraph [ref=e237]: Tap a service to start an estimate request with that work type already selected.
+        - generic [ref=e238]:
+          - button "Diagnostics" [ref=e239]:
+            - generic [ref=e240]: 
+            - generic [ref=e241]: Diagnostics
+          - button "Oil Change" [ref=e242]:
+            - generic [ref=e243]: 
+            - generic [ref=e244]: Oil Change
+          - button "Electrical Repair" [ref=e245]:
+            - generic [ref=e246]: 
+            - generic [ref=e247]: Electrical Repair
+          - button "Brake Repair" [ref=e248]:
+            - generic [ref=e249]: 
+            - generic [ref=e250]: Brake Repair
+          - button "A/C Service" [ref=e251]:
+            - generic [ref=e252]: 
+            - generic [ref=e253]: A/C Service
+          - button "Tires & Alignments" [ref=e254]:
+            - generic [ref=e255]: 
+            - generic [ref=e256]: Tires & Alignments
+          - button "Engine Service" [ref=e257]:
+            - generic [ref=e258]: 
+            - generic [ref=e259]: Engine Service
+          - button "Shocks & Struts" [ref=e260]:
+            - generic [ref=e261]: 
+            - generic [ref=e262]: Shocks & Struts
+      - generic [ref=e264]:
+        - generic [ref=e265]:
+          - generic [ref=e266]: Not Sure What To Book?
+          - heading "Start With The Symptom." [level=2] [ref=e267]
+          - paragraph [ref=e268]: Pick what your vehicle is doing and the site will point you toward the right diagnostic lane, then prefill the estimate request for you.
+        - generic [ref=e269]:
+          - generic "Estimate workflow" [ref=e270]:
+            - generic [ref=e271]:
+              - strong [ref=e272]: "1"
+              - text: Choose symptom
+            - generic [ref=e273]:
+              - strong [ref=e274]: "2"
+              - text: Review next steps
+            - generic [ref=e275]:
+              - strong [ref=e276]: "3"
+              - text: Send request
+          - generic [ref=e277]:
+            - generic [ref=e278]:
+              - heading "What is the vehicle doing?" [level=3] [ref=e279]
+              - generic [ref=e280]:
+                - button "Check Engine" [ref=e281]
+                - button "No Start" [ref=e282]
+                - button "Weak A/C" [ref=e283]
+                - button "Brake Noise" [ref=e284]
+                - button "Overheating" [ref=e285]
+                - button "Fleet/RV" [ref=e286]
+            - generic [ref=e287]:
+              - generic [ref=e288]: "Priority: Normal"
+              - heading "Diagnostic / Check Engine Light" [level=3] [ref=e289]
+              - paragraph [ref=e290]: A scan code is only the beginning. We verify live data, wiring, sensors, and mechanical causes before recommending parts.
+              - list [ref=e291]:
+                - listitem [ref=e292]:
+                  - generic [ref=e293]: 
+                  - generic [ref=e294]: Do not clear the light before your visit if possible.
+                - listitem [ref=e295]:
+                  - generic [ref=e296]: 
+                  - generic [ref=e297]: "Write down when it happens: cold start, idle, highway, towing, or heat."
+                - listitem [ref=e298]:
+                  - generic [ref=e299]: 
+                  - generic [ref=e300]: Tell us if the light is flashing, because that can mean stop driving.
+              - generic [ref=e301]:
+                - button "Use This In My Estimate" [ref=e302]:
+                  - generic [ref=e303]: 
+                  - text: Use This In My Estimate
+                - link "Call First" [ref=e304]:
+                  - /url: tel:5207520453
+                  - generic [ref=e305]: 
+                  - text: Call First
+      - generic [ref=e307]:
+        - generic [ref=e308]:
+          - generic [ref=e309]: Word on the Street
+          - heading "Trusted By Local Drivers" [level=2] [ref=e310]
+        - generic [ref=e311]:
+          - article [ref=e312]:
+            - generic [ref=e313]:
+              - generic [ref=e314]: 
+              - generic [ref=e315]: 
+              - generic [ref=e316]: 
+              - generic [ref=e317]: 
+              - generic [ref=e318]: 
+            - paragraph [ref=e319]: "\"Another shop quoted me $1,200 and said it was a transmission issue. James ran a proper diagnostic, found a $150 sensor issue, and saved me a grand.\""
+            - strong [ref=e320]: "- Mark T."
+          - article [ref=e321]:
+            - generic [ref=e322]:
+              - generic [ref=e323]: 
+              - generic [ref=e324]: 
+              - generic [ref=e325]: 
+              - generic [ref=e326]: 
+              - generic [ref=e327]: 
+            - paragraph [ref=e328]: "\"Brought in our RV before a massive road trip. They found exactly why the A/C was shorting out. Quick, honest, and zero upselling.\""
+            - strong [ref=e329]: "- Sarah & David L."
+          - article [ref=e330]:
+            - generic [ref=e331]:
+              - generic [ref=e332]: 
+              - generic [ref=e333]: 
+              - generic [ref=e334]: 
+              - generic [ref=e335]: 
+              - generic [ref=e336]: 
+            - paragraph [ref=e337]: "\"Dad Bod Garage keeps our small fleet of vans running. Minimal downtime, total transparency, and James genuinely cares about our business.\""
+            - strong [ref=e338]: "- Local Courier Co."
+      - generic [ref=e340]:
+        - generic [ref=e341]:
+          - generic [ref=e342]: Questions?
+          - heading "Frequently Asked" [level=2] [ref=e343]
+        - generic [ref=e344]:
+          - generic [ref=e345]:
+            - button "Why do you charge $80 for a diagnostic?" [ref=e346]:
+              - generic [ref=e347]: Why do you charge $80 for a diagnostic?
+              - generic [ref=e348]: 
+            - paragraph [ref=e349]: Proper diagnostics take specialized tools and an experienced technician's time. If you do the repair with us, the diagnostic fee is credited back to the bill.
+          - generic [ref=e350]:
+            - button "Do you work on my make and model?" [ref=e351]:
+              - generic [ref=e352]: Do you work on my make and model?
+              - generic [ref=e353]: 
+            - paragraph [ref=e354]: We handle major domestic and foreign daily drivers, fleet vehicles, diesels, school buses, classic cars, RVs, and large vehicles.
+          - generic [ref=e355]:
+            - button "Do you take walk-ins?" [ref=e356]:
+              - generic [ref=e357]: Do you take walk-ins?
+              - generic [ref=e358]: 
+            - paragraph [ref=e359]: Walk-ins are welcome during business hours, but requesting an estimate first gives us the best chance of fast turnaround.
+    - region "Map and contact info" [ref=e360]:
+      - generic [ref=e362]:
+        - generic [ref=e363]:
+          - generic [ref=e364]:
+            - generic [ref=e365]: 
+            - heading "Visit Dad Bod Garage" [level=3] [ref=e366]
+          - paragraph [ref=e367]: 980 S Arizona Boulevard Suite B-1, Coolidge, AZ 85128
+          - generic [ref=e368]:
+            - link "Call Us" [ref=e369]:
+              - /url: tel:5207520453
+              - generic [ref=e370]: 
+              - text: Call Us
+            - link "Get Directions" [ref=e371]:
+              - /url: https://www.google.com/maps/search/?api=1&query=980%20S%20Arizona%20Boulevard%20Suite%20B-1%2C%20Coolidge%2C%20AZ%2085128
+              - generic [ref=e372]: 
+              - text: Get Directions
+            - link "Email Us" [ref=e373]:
+              - /url: mailto:DadBodGarageAZ@gmail.com
+              - generic [ref=e374]: 
+              - text: Email Us
+          - generic [ref=e375]:
+            - heading "Business Hours" [level=4] [ref=e376]:
+              - generic [ref=e377]: 
+              - text: Business Hours
+            - generic [ref=e378]:
+              - generic [ref=e379]:
+                - generic [ref=e380]: Monday - Tuesday
+                - generic [ref=e381]: 8:00 AM - 4:00 PM
+              - generic [ref=e382]:
+                - generic [ref=e383]: Wednesday
+                - generic [ref=e384]: Closed
+              - generic [ref=e385]:
+                - generic [ref=e386]: Thursday - Friday
+                - generic [ref=e387]: 8:00 AM - 4:00 PM
+              - generic [ref=e388]:
+                - generic [ref=e389]: Saturday
+                - generic [ref=e390]: 10:00 AM - 3:00 PM
+              - generic [ref=e391]:
+                - generic [ref=e392]: Sunday
+                - generic [ref=e393]: By Appointment
+        - iframe [ref=e395]
+    - contentinfo [ref=e396]:
+      - generic [ref=e397]:
+        - generic [ref=e398]:
+          - generic [ref=e399]:
+            - generic [ref=e402]: Dad Bod Garage
+            - paragraph [ref=e403]: Diagnostics, not guessing. Premium auto repair for daily drivers, fleets, RVs, and classic cars in Coolidge, AZ.
+            - generic [ref=e404]:
+              - link "Call" [ref=e405]:
+                - /url: tel:5207520453
+                - generic [ref=e406]: 
+                - text: Call
+              - link "Email" [ref=e407]:
+                - /url: mailto:DadBodGarageAZ@gmail.com
+                - generic [ref=e408]: 
+                - text: Email
+              - link "Directions" [ref=e409]:
+                - /url: https://www.google.com/maps/search/?api=1&query=980%20S%20Arizona%20Boulevard%20Suite%20B-1%2C%20Coolidge%2C%20AZ%2085128
+                - generic [ref=e410]: 
+                - text: Directions
+              - link "Dad Bod Garage Instagram" [ref=e411]:
+                - /url: https://www.instagram.com/dadbodgarageaz/
+                - generic [ref=e412]: 
+                - text: Instagram
+          - generic [ref=e413]:
+            - heading "Quick Links" [level=4] [ref=e414]
+            - generic [ref=e415]:
+              - button "Home" [ref=e416]
+              - button "Our Services" [ref=e417]
+              - button "About James" [ref=e418]
+              - button "Get an Estimate" [ref=e419]
+              - button "Contact" [ref=e420]
+          - generic [ref=e421]:
+            - heading "We Fix It Right" [level=4] [ref=e422]
+            - generic [ref=e423]:
+              - generic [ref=e424]: Check engine lights
+              - generic [ref=e425]: Car will not start
+              - generic [ref=e426]: Brake grinding
+              - generic [ref=e427]: Weak A/C
+              - generic [ref=e428]: Stopping wasted parts money.
+        - generic [ref=e429]:
+          - generic [ref=e430]: © 2026 Dad Bod Garage. All rights reserved.
+          - generic [ref=e431]: Premium Auto Diagnostics & Precision Repair
+    - text: 

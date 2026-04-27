@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth bg-dark-900">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dad Bod Garage | High-End Auto Diagnostics & Repair</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;800;900&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <!-- GSAP for Animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/TextPlugin.min.js"></script>
+
+    <!-- Tailwind Configuration & Custom Styles -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans:['Open Sans', 'sans-serif'],
+                        heading:['Montserrat', 'sans-serif'],
+                    },
+                    colors: {
+                        gold: { 400: '#FBBF24', 500: '#D97706', 600: '#B45309' },
+                        dark: { 900: '#0B0F19', 800: '#151D2E', 700: '#232D42' }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Base & Custom Cursor */
+        body { background-color: #0B0F19; color: #F8FAFC; overflow-x: hidden; cursor: none; }
+        a, button, input, textarea { cursor: none; }
+        
+        .cursor-dot { width: 8px; height: 8px; background: #FBBF24; position: fixed; top: 0; left: 0; border-radius: 50%; z-index: 99999; pointer-events: none; transform: translate(-50%, -50%); transition: width 0.2s, height 0.2s, background-color 0.2s; }
+        .cursor-outline { width: 40px; height: 40px; border: 2px solid rgba(251, 191, 36, 0.5); position: fixed; top: 0; left: 0; border-radius: 50%; z-index: 99998; pointer-events: none; transform: translate(-50%, -50%); transition: width 0.15s, height 0.15s; }
+        .cursor-hover .cursor-dot { width: 12px; height: 12px; background: #fff; }
+        .cursor-hover .cursor-outline { width: 60px; height: 60px; border-color: #fff; background: rgba(255,255,255,0.05); }
+
+        /* SPA Logic */
+        .page-section { display: none; opacity: 0; }
+        .page-section.active { display: block; opacity: 1; }
+
+        /* Glass & Gradients */
+        .glass-panel { background: rgba(21, 29, 46, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.05); }
+        .text-gradient { background: linear-gradient(to right, #FBBF24, #D97706); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        
+        /* Hero Parallax Setup */
+        .hero-bg {
+            background-image: linear-gradient(to bottom, rgba(11, 15, 25, 0.8), rgba(11, 15, 25, 1)), url('https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?auto=format&fit=crop&q=80');
+            background-size: cover; background-position: center; background-attachment: fixed;
+        }
+
+        /* Marquee Animation */
+        .marquee-container { overflow: hidden; white-space: nowrap; width: 100%; display: flex; }
+        .marquee-content { display: inline-flex; animation: scroll-marquee 25s linear infinite; }
+        @keyframes scroll-marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+        /* Hide scrollbar for clean look */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0B0F19; }
+        ::-webkit-scrollbar-thumb { background: #D97706; border-radius: 10px; }
+    </style>
+</head>
+<body class="antialiased selection:bg-gold-500 selection:text-black">
+
+    <!-- CUSTOM CURSOR -->
+    <div class="cursor-dot hidden md:block"></div>
+    <div class="cursor-outline hidden md:block"></div>
+
+    <!-- NEW HIGHEST-END PRELOADER (Digital Diagnostic Gauge) -->
+    <div id="preloader" class="fixed inset-0 bg-dark-900 z-[9999] flex flex-col items-center justify-center">
+        <div class="relative flex items-center justify-center mb-6">
+            <!-- Glowing Spinners -->
+            <div class="absolute w-48 h-48 border-t-4 border-l-4 border-transparent border-t-gold-500 rounded-full animate-[spin_1.5s_linear_infinite] opacity-80"></div>
+            <div class="absolute w-40 h-40 border-b-2 border-r-2 border-transparent border-b-gray-500 rounded-full animate-[spin_2s_linear_infinite_reverse] opacity-40"></div>
+            <!-- Central Number -->
+            <div class="text-6xl font-heading font-black text-white relative z-10 flex items-baseline drop-shadow-[0_0_15px_rgba(251,191,36,0.3)]">
+                <span id="loader-count">0</span><span class="text-2xl text-gold-500 ml-1">%</span>
+            </div>
+        </div>
+        <div class="text-gray-400 text-xs mt-2 uppercase tracking-[0.4em] font-bold h-4" id="loader-text">Initializing Scanners...</div>
+    </div>
+
+    <!-- EVENT BANNER -->
+    <div class="bg-gradient-to-r from-gold-600 to-gold-400 text-black text-xs md:text-sm font-bold py-2 px-4 text-center tracking-wide z-50 relative">
+        <i class="fa-solid fa-calendar-star mr-2"></i> 
+        TRI-CITY BUSINESS EXPO | April 30, 2026 @ 4:30 PM | 778 N Main St, Florence | Free Swag & Talk Shop
+    </div>
+
+    <!-- NAVIGATION -->
+    <nav class="glass-panel sticky top-0 z-50 transition-all duration-300 shadow-xl border-b border-gray-800/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-24 items-center">
+                <div class="flex-shrink-0 cursor-pointer group" onclick="navigate('home')">
+                    <span class="font-heading font-black text-2xl tracking-tighter uppercase text-white group-hover:text-gold-400 transition duration-300">Dad Bod <span class="text-gold-500">Garage</span></span>
+                </div>
+                <!-- Desktop Menu -->
+                <div class="hidden lg:flex space-x-8 items-center">
+                    <button onclick="navigate('home')" class="nav-link text-gray-300 hover:text-gold-400 font-semibold uppercase text-sm tracking-wider transition">Home</button>
+                    <button onclick="navigate('services')" class="nav-link text-gray-300 hover:text-gold-400 font-semibold uppercase text-sm tracking-wider transition">Services</button>
+                    <button onclick="navigate('about')" class="nav-link text-gray-300 hover:text-gold-400 font-semibold uppercase text-sm tracking-wider transition">About Us</button>
+                    <button onclick="navigate('contact')" class="nav-link text-gray-300 hover:text-gold-400 font-semibold uppercase text-sm tracking-wider transition">Contact</button>
+                    
+                    <div class="h-6 w-px bg-gray-700 mx-2"></div> <!-- Divider -->
+
+                    <a href="tel:5207520453" class="text-white hover:text-gold-400 font-bold transition flex items-center">
+                        <i class="fa-solid fa-phone mr-2 text-gold-500"></i> (520) 752-0453
+                    </a>
+                    <button onclick="navigate('quote')" class="bg-gold-500 hover:bg-gold-400 text-black px-6 py-3 rounded font-bold uppercase tracking-widest transition shadow-[0_0_20px_rgba(217,119,6,0.3)] hover:shadow-[0_0_25px_rgba(251,191,36,0.6)] hover:-translate-y-0.5">
+                        Get Estimate
+                    </button>
+                </div>
+                <!-- Mobile Menu Button -->
+                <div class="lg:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-gray-300 hover:text-gold-400 focus:outline-none transition">
+                        <i class="fa-solid fa-bars-staggered text-3xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden lg:hidden glass-panel border-t border-gray-700 absolute w-full shadow-2xl">
+            <div class="px-4 pt-4 pb-6 space-y-4 text-center">
+                <button onclick="navigate('home')" class="block w-full py-3 text-gray-300 font-semibold uppercase tracking-wider hover:text-gold-400">Home</button>
+                <button onclick="navigate('services')" class="block w-full py-3 text-gray-300 font-semibold uppercase tracking-wider hover:text-gold-400">Services</button>
+                <button onclick="navigate('about')" class="block w-full py-3 text-gray-300 font-semibold uppercase tracking-wider hover:text-gold-400">About</button>
+                <button onclick="navigate('contact')" class="block w-full py-3 text-gray-300 font-semibold uppercase tracking-wider hover:text-gold-400">Contact</button>
+                <a href="tel:5207520453" class="block w-full border border-gray-600 text-white py-3 rounded font-bold uppercase tracking-wider"><i class="fa-solid fa-phone mr-2 text-gold-500"></i> Call (520) 752-0453</a>
+                <button onclick="navigate('quote')" class="block w-full bg-gold-500 text-black py-3 rounded font-bold uppercase tracking-wider">Get Estimate</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ==================== HOME PAGE ==================== -->
+    <div id="home" class="page-section active">
+        <!-- Hero Section -->
+        <div class="hero-bg min-h-[90vh] flex items-center relative overflow-hidden border-b border-gold-500/10">
+            <div class="absolute inset-0 bg-gradient-to-t from-dark-900 via-transparent to-transparent z-0"></div>
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full pt-10">
+                <div class="max-w-3xl">
+                    <div class="gsap-hero opacity-0 translate-y-10">
+                        <div class="inline-flex items-center space-x-2 bg-dark-800/80 border border-gold-500/30 px-4 py-2 rounded-full mb-6 backdrop-blur-md shadow-lg">
+                            <span class="w-2 h-2 rounded-full bg-gold-400 animate-pulse"></span>
+                            <span class="text-gold-400 font-bold tracking-widest uppercase text-xs">The Dad Bod Guarantee</span>
+                        </div>
+                        <h1 class="text-6xl md:text-8xl font-heading font-black text-white leading-[1.05] mb-6">
+                            WE DON'T GUESS. <br> <span class="text-gradient drop-shadow-lg">WE DIAGNOSE.</span>
+                        </h1>
+                        <p class="text-xl text-gray-300 mb-10 font-light max-w-2xl border-l-4 border-gold-500 pl-4 bg-dark-900/30 py-2">
+                            Stop throwing parts at your car. Experience honest, no-BS service in Coolidge, AZ. We fix it right the first time, saving you time, money, and frustration.
+                        </p>
+                        <div class="flex flex-col sm:flex-row gap-4">
+                            <button onclick="navigate('quote')" class="bg-gold-500 hover:bg-gold-400 text-black px-8 py-4 rounded font-bold uppercase tracking-wide transition text-center shadow-[0_0_30px_rgba(217,119,6,0.3)] hover:-translate-y-1">
+                                <i class="fa-solid fa-file-invoice-dollar mr-2"></i> Get An Estimate
+                            </button>
+                            <a href="tel:5207520453" class="glass-panel hover:bg-white/5 text-white px-8 py-4 rounded font-bold uppercase tracking-wide transition text-center border border-gray-600 hover:border-gold-400 hover:-translate-y-1">
+                                <i class="fa-solid fa-phone mr-2 text-gold-500"></i> Call (520) 752-0453
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Marquee Bar (Specialties) -->
+        <div class="bg-gold-500 py-3 border-y border-gold-600 marquee-container text-black font-bold uppercase tracking-widest text-sm shadow-[0_5px_20px_rgba(217,119,6,0.2)] relative z-20">
+            <div class="marquee-content items-center">
+                <span class="mx-8"><i class="fa-solid fa-check mr-2"></i> Diagnostic Specialists</span> •
+                <span class="mx-8"><i class="fa-solid fa-bus mr-2"></i> Fleet & School Bus Maintenance</span> •
+                <span class="mx-8"><i class="fa-solid fa-truck-monster mr-2"></i> RV Repair</span> •
+                <span class="mx-8"><i class="fa-solid fa-car-side mr-2"></i> Classic & Muscle Cars</span> •
+                <span class="mx-8"><i class="fa-solid fa-snowflake mr-2"></i> Premium A/C Services</span> •
+                <span class="mx-8"><i class="fa-solid fa-check mr-2"></i> Diagnostic Specialists</span> •
+                <span class="mx-8"><i class="fa-solid fa-bus mr-2"></i> Fleet & School Bus Maintenance</span> •
+                <span class="mx-8"><i class="fa-solid fa-truck-monster mr-2"></i> RV Repair</span> •
+                <span class="mx-8"><i class="fa-solid fa-car-side mr-2"></i> Classic & Muscle Cars</span> •
+                <span class="mx-8"><i class="fa-solid fa-snowflake mr-2"></i> Premium A/C Services</span>
+            </div>
+        </div>
+
+        <!-- Trust / Anti-BS Section -->
+        <div class="py-32 bg-dark-900 relative">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-20 gsap-fade-up">
+                    <h2 class="text-4xl md:text-5xl font-heading font-black mb-4">Precision <span class="text-gold-500">+</span> Honesty</h2>
+                    <p class="text-gray-400 max-w-2xl mx-auto text-lg">Most mechanics rely on trial and error at your expense. We use advanced diagnostics to pinpoint the exact issue. No upsells. No shortcuts. No wasted money.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="glass-panel p-10 rounded-2xl gsap-stagger-card hover:-translate-y-2 transition duration-300 border-t-4 border-t-gold-500 shadow-xl group">
+                        <div class="bg-dark-800 w-16 h-16 rounded-full flex items-center justify-center mb-6 shadow-[0_0_20px_rgba(251,191,36,0.15)] group-hover:scale-110 transition">
+                            <i class="fa-solid fa-microchip text-gold-400 text-2xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-heading font-bold mb-4 text-white">Diagnostics First</h3>
+                        <p class="text-gray-400 leading-relaxed">We find the root cause before turning a wrench. Our $80 full vehicle diagnostic ensures you only pay for what actually needs fixing.</p>
+                    </div>
+                    <div class="glass-panel p-10 rounded-2xl gsap-stagger-card hover:-translate-y-2 transition duration-300 border-t-4 border-t-dark-700 hover:border-t-gold-500 shadow-xl group">
+                        <div class="bg-dark-800 w-16 h-16 rounded-full flex items-center justify-center mb-6 shadow-[0_0_20px_rgba(251,191,36,0.05)] group-hover:scale-110 transition group-hover:shadow-[0_0_20px_rgba(251,191,36,0.2)]">
+                            <i class="fa-solid fa-handshake-angle text-gold-400 text-2xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-heading font-bold mb-4 text-white">No-BS Approach</h3>
+                        <p class="text-gray-400 leading-relaxed">Clear explanations for every repair. We provide transparent advice to keep your family safe and your daily driver running flawlessly.</p>
+                    </div>
+                    <div class="glass-panel p-10 rounded-2xl gsap-stagger-card hover:-translate-y-2 transition duration-300 border-t-4 border-t-dark-700 hover:border-t-gold-500 shadow-xl group">
+                        <div class="bg-dark-800 w-16 h-16 rounded-full flex items-center justify-center mb-6 shadow-[0_0_20px_rgba(251,191,36,0.05)] group-hover:scale-110 transition group-hover:shadow-[0_0_20px_rgba(251,191,36,0.2)]">
+                            <i class="fa-solid fa-wrench text-gold-400 text-2xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-heading font-bold mb-4 text-white">Fix It Right</h3>
+                        <p class="text-gray-400 leading-relaxed">Avoid repeat repairs. From complex electrical work to complete engine rebuilds, we do the job correctly the very first time.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- The Process Section -->
+        <div class="py-24 bg-dark-800 border-y border-gray-800 relative overflow-hidden">
+            <div class="absolute -right-40 top-20 text-dark-700/20 text-[20rem] pointer-events-none"><i class="fa-solid fa-gears"></i></div>
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="text-center mb-16 gsap-fade-up">
+                    <span class="text-gold-500 font-bold tracking-widest uppercase mb-2 block">How We Work</span>
+                    <h2 class="text-4xl md:text-5xl font-heading font-black">The Dad Bod System</h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                    <div class="relative text-center gsap-process">
+                        <div class="w-20 h-20 mx-auto bg-dark-900 border-2 border-gold-500 rounded-full flex items-center justify-center text-2xl font-black text-gold-400 mb-6 relative z-10 shadow-[0_0_20px_rgba(251,191,36,0.2)]">1</div>
+                        <div class="hidden md:block absolute top-10 left-[60%] w-[80%] h-[2px] bg-gradient-to-r from-gold-500 to-dark-700 z-0"></div>
+                        <h3 class="text-xl font-bold mb-2">Deep Diagnostic</h3>
+                        <p class="text-gray-400 text-sm">We hook up state-of-the-art tools to read your car’s actual data, not just guess by sound.</p>
+                    </div>
+                    <div class="relative text-center gsap-process">
+                        <div class="w-20 h-20 mx-auto bg-dark-900 border-2 border-gold-500 rounded-full flex items-center justify-center text-2xl font-black text-gold-400 mb-6 relative z-10 shadow-[0_0_20px_rgba(251,191,36,0.2)]">2</div>
+                        <div class="hidden md:block absolute top-10 left-[60%] w-[80%] h-[2px] bg-gradient-to-r from-gold-500 to-dark-700 z-0"></div>
+                        <h3 class="text-xl font-bold mb-2">No-BS Quote</h3>
+                        <p class="text-gray-400 text-sm">We explain exactly what broke, why it broke, and give you a transparent price to fix it.</p>
+                    </div>
+                    <div class="relative text-center gsap-process">
+                        <div class="w-20 h-20 mx-auto bg-dark-900 border-2 border-gold-500 rounded-full flex items-center justify-center text-2xl font-black text-gold-400 mb-6 relative z-10 shadow-[0_0_20px_rgba(251,191,36,0.2)]">3</div>
+                        <div class="hidden md:block absolute top-10 left-[60%] w-[80%] h-[2px] bg-gradient-to-r from-gold-500 to-transparent z-0"></div>
+                        <h3 class="text-xl font-bold mb-2">Precision Repair</h3>
+                        <p class="text-gray-400 text-sm">Our expert technicians execute the repair using high-quality parts, fixing it right the first time.</p>
+                    </div>
+                    <div class="relative text-center gsap-process">
+                        <div class="w-20 h-20 mx-auto bg-dark-900 border-2 border-gold-500 rounded-full flex items-center justify-center text-xl font-black text-gold-400 mb-6 relative z-10 shadow-[0_0_20px_rgba(251,191,36,0.2)]"><i class="fa-solid fa-flag-checkered"></i></div>
+                        <h3 class="text-xl font-bold mb-2">Back on the Road</h3>
+                        <p class="text-gray-400 text-sm">Final safety checks and a test drive ensure your vehicle is safe for you and your family.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- STRATEGIC CTA #1 (Home Page) -->
+        <div class="py-20 bg-dark-900 relative overflow-hidden flex items-center justify-center border-b border-gray-800">
+            <!-- decorative background -->
+            <div class="absolute inset-0 opacity-[0.03] bg-[url('https://images.unsplash.com/photo-1504222490345-c075b6008014?auto=format&fit=crop&q=80')] bg-cover bg-center"></div>
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3/4 h-3/4 bg-gold-500/10 blur-[120px] rounded-full pointer-events-none"></div>
+            
+            <div class="max-w-4xl mx-auto px-4 relative z-10 text-center gsap-fade-up">
+                <span class="text-gold-500 font-bold tracking-widest uppercase mb-3 block">Don't Wait Until It Breaks Down</span>
+                <h2 class="text-4xl md:text-5xl font-heading font-black mb-6">READY TO STOP GUESSING?</h2>
+                <p class="text-gray-400 mb-10 text-lg">Send us your vehicle's symptoms or call us directly. We'll outline the exact diagnostic process and get you scheduled.</p>
+                <div class="flex flex-col sm:flex-row justify-center gap-4">
+                    <button onclick="navigate('quote')" class="bg-gold-500 hover:bg-gold-400 text-black px-10 py-4 rounded font-bold uppercase tracking-wider transition shadow-[0_0_30px_rgba(217,119,6,0.3)] hover:-translate-y-1">
+                        <i class="fa-solid fa-bolt mr-2"></i> Get An Estimate
+                    </button>
+                    <a href="tel:5207520453" class="glass-panel text-white hover:border-gold-400 px-10 py-4 rounded font-bold uppercase tracking-wider transition hover:-translate-y-1">
+                        <i class="fa-solid fa-phone mr-2 text-gold-500"></i> (520) 752-0453
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Featured Offers -->
+        <div class="py-24 bg-dark-900 relative">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col md:flex-row gap-16 items-center">
+                    <div class="md:w-1/2 gsap-fade-right">
+                        <h2 class="text-4xl md:text-5xl font-heading font-black mb-6">Premium Offers, <br><span class="text-gold-500">Neighborhood Prices.</span></h2>
+                        <p class="text-gray-400 mb-8 text-lg">We believe in making top-tier automotive care accessible. Take advantage of our current specials designed to save you money without compromising quality.</p>
+                        <div class="space-y-6">
+                            <div class="flex items-start glass-panel p-6 rounded-xl hover:border-gold-500/50 transition">
+                                <div class="bg-gold-500/20 w-12 h-12 rounded-full flex items-center justify-center shrink-0 mr-5 border border-gold-500/30">
+                                    <i class="fa-solid fa-magnifying-glass-chart text-gold-400"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-white text-xl mb-1">$80 Full Diagnostic Guarantee</h4>
+                                    <p class="text-sm text-gray-400">Complete system check. If you do the repair with us, the $80 is credited directly back to your bill.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start glass-panel p-6 rounded-xl hover:border-cyan-500/50 transition">
+                                <div class="bg-cyan-500/20 w-12 h-12 rounded-full flex items-center justify-center shrink-0 mr-5 border border-cyan-500/30">
+                                    <i class="fa-solid fa-snowflake text-cyan-400"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-white text-xl mb-1">$74.99 Ultimate A/C Special</h4>
+                                    <p class="text-sm text-gray-400">Arizona heat is no joke. Includes performance check, refrigerant levels, component inspection, and cold air verification.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="md:w-1/2 w-full gsap-fade-left">
+                        <div class="grid grid-cols-2 gap-4">
+                            <img src="https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?auto=format&fit=crop&q=80" class="rounded-2xl h-64 w-full object-cover shadow-2xl border border-gray-700">
+                            <img src="https://images.unsplash.com/photo-1503376713206-8c41db1b601f?auto=format&fit=crop&q=80" class="rounded-2xl h-64 w-full object-cover shadow-2xl translate-y-8 border-2 border-gold-500/30">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Testimonials -->
+        <div class="py-24 bg-dark-800 border-t border-gray-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16 gsap-fade-up">
+                    <h2 class="text-4xl font-heading font-black mb-4">Word on the Street</h2>
+                    <p class="text-gray-400">Our reputation as Coolidge's most trusted shop is built by our clients.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="glass-panel p-8 rounded-xl relative gsap-stagger-review hover:-translate-y-1 transition border-t-2 border-t-transparent hover:border-t-gold-500">
+                        <i class="fa-solid fa-quote-right absolute top-6 right-6 text-4xl text-white/5"></i>
+                        <div class="flex text-gold-400 text-sm mb-4"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                        <p class="text-gray-300 italic mb-6 text-sm leading-relaxed">"Another shop quoted me $1,200 and said it was a transmission issue. James ran a proper diagnostic, found a $150 sensor issue. Saved me a grand. Won't go anywhere else."</p>
+                        <h4 class="font-bold text-white tracking-wide">- Mark T.</h4>
+                    </div>
+                    <div class="glass-panel p-8 rounded-xl relative gsap-stagger-review hover:-translate-y-1 transition border-t-2 border-t-transparent hover:border-t-gold-500">
+                        <i class="fa-solid fa-quote-right absolute top-6 right-6 text-4xl text-white/5"></i>
+                        <div class="flex text-gold-400 text-sm mb-4"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                        <p class="text-gray-300 italic mb-6 text-sm leading-relaxed">"Brought in our RV before a massive road trip. They didn't guess, they found exactly why the A/C was shorting out. Quick, honest, and zero upselling."</p>
+                        <h4 class="font-bold text-white tracking-wide">- Sarah & David L.</h4>
+                    </div>
+                    <div class="glass-panel p-8 rounded-xl relative gsap-stagger-review hover:-translate-y-1 transition border-t-2 border-t-transparent hover:border-t-gold-500">
+                        <i class="fa-solid fa-quote-right absolute top-6 right-6 text-4xl text-white/5"></i>
+                        <div class="flex text-gold-400 text-sm mb-4"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                        <p class="text-gray-300 italic mb-6 text-sm leading-relaxed">"Dad Bod Garage keeps our small fleet of vans running. Minimal downtime, total transparency, and James genuinely cares about our business."</p>
+                        <h4 class="font-bold text-white tracking-wide">- Local Courier Co.</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== GET A QUOTE PAGE ==================== -->
+    <div id="quote" class="page-section">
+        <div class="bg-dark-800 py-24 border-b border-gray-800 text-center relative overflow-hidden">
+            <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1504222490345-c075b6008014?auto=format&fit=crop&q=80')] opacity-5 bg-cover bg-center"></div>
+            <div class="relative z-10 max-w-3xl mx-auto px-4">
+                <h1 class="text-5xl md:text-6xl font-heading font-black mb-4">Request An <span class="text-gold-500">Estimate</span></h1>
+                <p class="text-gray-400 text-lg">Provide details about your vehicle and the issue. We'll get back to you with the next steps for a proper diagnostic and honest quote.</p>
+            </div>
+        </div>
+
+        <div class="py-20 bg-dark-900">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <form class="glass-panel p-8 md:p-14 rounded-2xl shadow-2xl border-t-4 border-t-gold-500" onsubmit="event.preventDefault(); alert('Quote Request Sent! We will contact you shortly to schedule diagnostics.');">
+                    
+                    <h3 class="text-2xl font-bold mb-8 border-b border-gray-700 pb-4 text-white">1. Your Contact Details</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Full Name *</label>
+                            <input type="text" class="w-full bg-dark-900 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500 transition" required>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Phone Number *</label>
+                            <input type="tel" class="w-full bg-dark-900 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500 transition" required>
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Email Address</label>
+                            <input type="email" class="w-full bg-dark-900 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500 transition">
+                        </div>
+                    </div>
+
+                    <h3 class="text-2xl font-bold mb-8 border-b border-gray-700 pb-4 text-white">2. Vehicle Information</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Year *</label>
+                            <input type="text" placeholder="e.g. 2018" class="w-full bg-dark-900 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500 transition" required>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Make *</label>
+                            <input type="text" placeholder="e.g. Ford" class="w-full bg-dark-900 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500 transition" required>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Model *</label>
+                            <input type="text" placeholder="e.g. F-150" class="w-full bg-dark-900 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500 transition" required>
+                        </div>
+                        <div class="md:col-span-3">
+                            <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">VIN (Optional - for exact parts)</label>
+                            <input type="text" class="w-full bg-dark-900 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500 transition">
+                        </div>
+                    </div>
+
+                    <h3 class="text-2xl font-bold mb-8 border-b border-gray-700 pb-4 text-white">3. What's Going On?</h3>
+                    <div class="mb-10">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Describe the issue (Noises, Check Engine Light, etc.) *</label>
+                        <textarea rows="5" class="w-full bg-dark-900 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500 transition resize-none" placeholder="Don't worry about diagnosing it yourself, just tell us what it's doing..." required></textarea>
+                    </div>
+
+                    <button type="submit" class="w-full bg-gold-500 hover:bg-gold-400 text-black py-5 rounded-lg text-xl font-bold uppercase tracking-widest transition shadow-[0_0_20px_rgba(217,119,6,0.3)] hover:shadow-[0_0_30px_rgba(251,191,36,0.5)]">
+                        Submit For Review
+                    </button>
+                    <p class="text-center text-gray-500 text-sm mt-5"><i class="fa-solid fa-lock mr-1"></i> Your information is secure. No spam, ever.</p>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== SERVICES PAGE ==================== -->
+    <div id="services" class="page-section">
+        <div class="bg-dark-800 py-24 border-b border-gray-800 text-center">
+            <h1 class="text-5xl md:text-6xl font-heading font-black mb-4">Our Services</h1>
+            <p class="text-gray-400 max-w-2xl mx-auto text-lg">From daily drivers to heavy fleets and classic restorations, we have the expertise and the technology to fix it right the first time.</p>
+        </div>
+
+        <div class="py-24 bg-dark-900">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <!-- Core Services -->
+                <div class="mb-24">
+                    <h2 class="text-3xl font-heading font-bold mb-10 border-b border-gray-800 pb-4"><span class="text-gold-500">Core</span> Auto Care</h2>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                        <div class="glass-panel p-8 rounded-xl text-center hover:border-gold-500 transition group hover:-translate-y-1 shadow-lg">
+                            <i class="fa-solid fa-laptop-medical text-4xl text-gold-400 mb-4 group-hover:scale-110 transition"></i>
+                            <h3 class="font-bold text-lg text-white">Diagnostics</h3>
+                        </div>
+                        <div class="glass-panel p-8 rounded-xl text-center hover:border-gold-500 transition group hover:-translate-y-1 shadow-lg">
+                            <i class="fa-solid fa-oil-can text-4xl text-gold-400 mb-4 group-hover:scale-110 transition"></i>
+                            <h3 class="font-bold text-lg text-white">Oil Change</h3>
+                        </div>
+                        <div class="glass-panel p-8 rounded-xl text-center hover:border-gold-500 transition group hover:-translate-y-1 shadow-lg">
+                            <i class="fa-solid fa-car-battery text-4xl text-gold-400 mb-4 group-hover:scale-110 transition"></i>
+                            <h3 class="font-bold text-lg text-white">Electrical Repair</h3>
+                        </div>
+                        <div class="glass-panel p-8 rounded-xl text-center hover:border-gold-500 transition group hover:-translate-y-1 shadow-lg">
+                            <i class="fa-solid fa-compact-disc text-4xl text-gold-400 mb-4 group-hover:scale-110 transition"></i>
+                            <h3 class="font-bold text-lg text-white">Brake Repair</h3>
+                        </div>
+                        <div class="glass-panel p-8 rounded-xl text-center hover:border-gold-500 transition group hover:-translate-y-1 shadow-lg">
+                            <i class="fa-solid fa-fan text-4xl text-gold-400 mb-4 group-hover:scale-110 transition"></i>
+                            <h3 class="font-bold text-lg text-white">AC Service</h3>
+                        </div>
+                        <div class="glass-panel p-8 rounded-xl text-center hover:border-gold-500 transition group hover:-translate-y-1 shadow-lg">
+                            <i class="fa-solid fa-truck-monster text-4xl text-gold-400 mb-4 group-hover:scale-110 transition"></i>
+                            <h3 class="font-bold text-lg text-white">Tires & Alignments</h3>
+                        </div>
+                        <div class="glass-panel p-8 rounded-xl text-center hover:border-gold-500 transition group hover:-translate-y-1 shadow-lg">
+                            <i class="fa-solid fa-gears text-4xl text-gold-400 mb-4 group-hover:scale-110 transition"></i>
+                            <h3 class="font-bold text-lg text-white">Engine Service</h3>
+                        </div>
+                        <div class="glass-panel p-8 rounded-xl text-center hover:border-gold-500 transition group hover:-translate-y-1 shadow-lg">
+                            <i class="fa-solid fa-car-burst text-4xl text-gold-400 mb-4 group-hover:scale-110 transition"></i>
+                            <h3 class="font-bold text-lg text-white">Shocks & Struts</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Specialized Services -->
+                <div>
+                    <h2 class="text-3xl font-heading font-bold mb-10 border-b border-gray-800 pb-4"><span class="text-gold-500">Specialized</span> Capabilities</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div class="bg-gradient-to-br from-dark-800 to-dark-900 p-10 rounded-2xl border border-gray-700 hover:border-gold-500 transition shadow-2xl group hover:-translate-y-1">
+                            <i class="fa-solid fa-bus text-5xl text-gold-500 mb-6 opacity-80 group-hover:scale-110 transition"></i>
+                            <h3 class="text-2xl font-bold mb-4 text-white">Fleet & School Buses</h3>
+                            <p class="text-gray-400 mb-6 text-sm leading-relaxed">Minimize downtime and maximize safety. We provide strict preventative maintenance and DOT compliance checks for heavy fleets and school buses.</p>
+                            <ul class="text-sm text-gray-300 space-y-3">
+                                <li class="flex items-center"><i class="fa-solid fa-check text-gold-500 mr-3"></i> Preventative Maintenance</li>
+                                <li class="flex items-center"><i class="fa-solid fa-check text-gold-500 mr-3"></i> Safety & Compliance</li>
+                                <li class="flex items-center"><i class="fa-solid fa-check text-gold-500 mr-3"></i> Diesel Repair</li>
+                            </ul>
+                        </div>
+                        <div class="bg-gradient-to-br from-dark-800 to-dark-900 p-10 rounded-2xl border border-gray-700 hover:border-gold-500 transition shadow-2xl group hover:-translate-y-1">
+                            <i class="fa-solid fa-car-side text-5xl text-gold-500 mb-6 opacity-80 group-hover:scale-110 transition"></i>
+                            <h3 class="text-2xl font-bold mb-4 text-white">Classic & Muscle Cars</h3>
+                            <p class="text-gray-400 mb-6 text-sm leading-relaxed">Classic muscle meets modern reliability. We treat vintage vehicles (like Oldsmobile Toronados) with the immense respect and precision they deserve.</p>
+                            <ul class="text-sm text-gray-300 space-y-3">
+                                <li class="flex items-center"><i class="fa-solid fa-check text-gold-500 mr-3"></i> Restoration Support</li>
+                                <li class="flex items-center"><i class="fa-solid fa-check text-gold-500 mr-3"></i> Performance Upgrades</li>
+                                <li class="flex items-center"><i class="fa-solid fa-check text-gold-500 mr-3"></i> Custom Tuning</li>
+                            </ul>
+                        </div>
+                        <div class="bg-gradient-to-br from-dark-800 to-dark-900 p-10 rounded-2xl border border-gray-700 hover:border-gold-500 transition shadow-2xl group hover:-translate-y-1">
+                            <i class="fa-solid fa-camper-van text-5xl text-gold-500 mb-6 opacity-80 group-hover:scale-110 transition"></i>
+                            <h3 class="text-2xl font-bold mb-4 text-white">RV & Large Vehicles</h3>
+                            <p class="text-gray-400 mb-6 text-sm leading-relaxed">Our facility is equipped to handle massive vehicles. From engine troubles to electrical gremlins, our experienced technicians get your home-on-wheels back on the road.</p>
+                            <ul class="text-sm text-gray-300 space-y-3">
+                                <li class="flex items-center"><i class="fa-solid fa-check text-gold-500 mr-3"></i> Engine Diagnostics</li>
+                                <li class="flex items-center"><i class="fa-solid fa-check text-gold-500 mr-3"></i> A/C & Electrical</li>
+                                <li class="flex items-center"><i class="fa-solid fa-check text-gold-500 mr-3"></i> Chassis Repair</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- STRATEGIC CTA #2 (Services Page) -->
+        <div class="py-20 bg-dark-800 relative overflow-hidden flex items-center justify-center border-t border-gold-500/20">
+            <div class="absolute inset-0 opacity-[0.05] bg-[url('https://images.unsplash.com/photo-1517524285303-d6fc6834249c?auto=format&fit=crop&q=80')] bg-cover bg-center"></div>
+            <div class="max-w-4xl mx-auto px-4 relative z-10 text-center gsap-fade-up">
+                <h2 class="text-3xl md:text-5xl font-heading font-black mb-6 text-white">TRUST YOUR VEHICLE WITH EXPERTS</h2>
+                <p class="text-gray-400 mb-10 text-lg">No matter what you drive, we treat it like our own family is riding in it.</p>
+                <div class="flex flex-col sm:flex-row justify-center gap-4">
+                    <button onclick="navigate('quote')" class="bg-gold-500 hover:bg-gold-400 text-black px-10 py-4 rounded font-bold uppercase tracking-wider transition shadow-[0_0_30px_rgba(217,119,6,0.3)] hover:-translate-y-1">
+                        Get An Estimate
+                    </button>
+                    <a href="tel:5207520453" class="glass-panel text-white hover:border-gold-400 px-10 py-4 rounded font-bold uppercase tracking-wider transition hover:-translate-y-1">
+                        <i class="fa-solid fa-phone mr-2 text-gold-500"></i> (520) 752-0453
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== ABOUT PAGE ==================== -->
+    <div id="about" class="page-section">
+        <div class="py-24 bg-dark-900 min-h-[80vh] flex items-center">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col md:flex-row gap-16 items-center">
+                    <div class="md:w-1/2 relative">
+                        <div class="absolute inset-0 bg-gold-500 rounded-2xl transform translate-x-4 translate-y-4 opacity-20 border border-gold-500"></div>
+                        <img src="https://images.unsplash.com/photo-1517524285303-d6fc6834249c?auto=format&fit=crop&q=80" alt="Mechanic working" class="rounded-2xl shadow-2xl relative z-10 border border-gray-700">
+                    </div>
+                    <div class="md:w-1/2">
+                        <span class="text-gold-500 font-bold tracking-widest uppercase mb-2 block">Meet The Owner</span>
+                        <h2 class="text-4xl md:text-5xl font-heading font-black mb-6 text-white">Hi, I'm James.</h2>
+                        <p class="text-gray-300 mb-6 leading-relaxed text-lg">
+                            I started Dad Bod Garage with one simple mission: to be the trusted neighborhood mechanic that actually tells you the truth. No upsells. No guessing. Just honest, transparent work.
+                        </p>
+                        <p class="text-gray-300 mb-8 leading-relaxed text-lg">
+                            As a family-oriented guy, I know how important a reliable vehicle is. Whether we're making sure a local school bus is perfectly safe for the community's kids, or fixing your daily driver so you can get to work—we treat every vehicle as if our own family was riding in it.
+                        </p>
+                        <div class="bg-dark-800 p-8 rounded-xl border-l-4 border-gold-500 mb-8 shadow-lg">
+                            <p class="italic text-gray-300 font-serif text-xl">"Our entire business is built around saving you money by diagnosing properly instead of guessing."</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FAQ Section -->
+        <div class="py-24 bg-dark-800 border-t border-gray-800">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl font-heading font-black mb-4 text-white">Frequently Asked Questions</h2>
+                    <p class="text-gray-400">Honest answers to common mechanic questions.</p>
+                </div>
+                <div class="space-y-4">
+                    <div class="glass-panel p-8 rounded-xl shadow-lg">
+                        <h4 class="text-xl font-bold text-white mb-3">Why do you charge $80 for a diagnostic?</h4>
+                        <p class="text-gray-400 leading-relaxed">Proper diagnostics take expensive, highly-specialized computers and an expert technician's time. Free check-ups usually mean a mechanic is just guessing or preparing to overcharge you on parts. Plus, if you do the repair with us, we credit the $80 back!</p>
+                    </div>
+                    <div class="glass-panel p-8 rounded-xl shadow-lg">
+                        <h4 class="text-xl font-bold text-white mb-3">Do you work on[Insert Brand/Make]?</h4>
+                        <p class="text-gray-400 leading-relaxed">We handle all major domestic and foreign daily drivers, fleet vehicles, diesels, school buses, classic cars, and RVs. If it has an engine, we can properly diagnose it.</p>
+                    </div>
+                    <div class="glass-panel p-8 rounded-xl shadow-lg">
+                        <h4 class="text-xl font-bold text-white mb-3">Do you take walk-ins?</h4>
+                        <p class="text-gray-400 leading-relaxed">Yes, walk-ins are welcome during business hours. However, scheduling an appointment or requesting a quote online guarantees you the fastest turnaround time.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- STRATEGIC CTA #3 (About Page) -->
+        <div class="py-20 bg-dark-900 border-t border-gray-800 text-center relative overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-t from-dark-900 to-transparent z-0"></div>
+            <div class="max-w-4xl mx-auto px-4 relative z-10">
+                <h2 class="text-3xl md:text-4xl font-heading font-black mb-6 text-white">HAVE MORE QUESTIONS?</h2>
+                <p class="text-gray-400 mb-10 text-lg">We are here to give you straightforward answers. Drop us a line.</p>
+                <div class="flex flex-col sm:flex-row justify-center gap-4">
+                    <button onclick="navigate('contact')" class="bg-gold-500 hover:bg-gold-400 text-black px-10 py-4 rounded font-bold uppercase tracking-wider transition shadow-[0_0_30px_rgba(217,119,6,0.3)] hover:-translate-y-1">
+                        Contact Us
+                    </button>
+                    <a href="tel:5207520453" class="glass-panel text-white hover:border-gold-400 px-10 py-4 rounded font-bold uppercase tracking-wider transition hover:-translate-y-1">
+                        <i class="fa-solid fa-phone mr-2 text-gold-500"></i> Call (520) 752-0453
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== CONTACT PAGE ==================== -->
+    <div id="contact" class="page-section">
+        <div class="bg-dark-800 py-24 border-b border-gray-800 text-center">
+            <h1 class="text-5xl font-heading font-black mb-4 text-white">Contact Us</h1>
+            <p class="text-gray-400 max-w-2xl mx-auto text-lg">Schedule your diagnostic, ask a question, or simply drop by the shop.</p>
+        </div>
+
+        <div class="py-20 bg-dark-900">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-16">
+                    <!-- Contact Info -->
+                    <div>
+                        <h3 class="text-3xl font-heading font-bold mb-10 text-white">Location & Hours</h3>
+                        
+                        <div class="flex items-center mb-8 glass-panel p-6 rounded-xl hover:border-gold-500 transition cursor-none shadow-lg">
+                            <div class="bg-dark-800 w-16 h-16 rounded-full flex items-center justify-center mr-6 shrink-0 border border-gold-500/20 shadow-[0_0_15px_rgba(251,191,36,0.15)]">
+                                <i class="fa-solid fa-location-dot text-gold-500 text-2xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-xl mb-1 text-white">Visit The Shop</h4>
+                                <p class="text-gray-400 text-lg">980 S Arizona Boulevard Suite B-1<br>Coolidge, AZ 85128</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center mb-8 glass-panel p-6 rounded-xl hover:border-gold-500 transition cursor-none shadow-lg">
+                            <div class="bg-dark-800 w-16 h-16 rounded-full flex items-center justify-center mr-6 shrink-0 border border-gold-500/20 shadow-[0_0_15px_rgba(251,191,36,0.15)]">
+                                <i class="fa-solid fa-phone text-gold-500 text-2xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-xl mb-1 text-white">Call Us</h4>
+                                <a href="tel:5207520453" class="text-gray-400 hover:text-white transition text-lg font-bold tracking-wide">520-752-0453</a>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center mb-10 glass-panel p-6 rounded-xl hover:border-gold-500 transition cursor-none shadow-lg">
+                            <div class="bg-dark-800 w-16 h-16 rounded-full flex items-center justify-center mr-6 shrink-0 border border-gold-500/20 shadow-[0_0_15px_rgba(251,191,36,0.15)]">
+                                <i class="fa-solid fa-envelope text-gold-500 text-2xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-xl mb-1 text-white">Email Us</h4>
+                                <a href="mailto:DadBodGarageAZ@gmail.com" class="text-gray-400 hover:text-white transition text-lg">DadBodGarageAZ@gmail.com</a>
+                            </div>
+                        </div>
+
+                        <h3 class="text-2xl font-heading font-bold mb-6 border-b border-gray-800 pb-4 text-white">Business Hours</h3>
+                        <ul class="text-gray-300 space-y-4 text-lg bg-dark-800 p-8 rounded-xl border border-gray-700 shadow-xl">
+                            <li class="flex justify-between border-b border-gray-700 pb-2"><span>Monday - Tuesday</span> <span class="font-bold text-white">8:00 AM – 4:00 PM</span></li>
+                            <li class="flex justify-between border-b border-gray-700 pb-2 text-gray-500"><span>Wednesday</span> <span>Closed</span></li>
+                            <li class="flex justify-between border-b border-gray-700 pb-2"><span>Thursday - Friday</span> <span class="font-bold text-white">8:00 AM – 4:00 PM</span></li>
+                            <li class="flex justify-between border-b border-gray-700 pb-2"><span>Saturday</span> <span class="font-bold text-white">10:00 AM – 3:00 PM</span></li>
+                            <li class="flex justify-between pt-2"><span>Sunday</span> <span class="font-bold text-gold-400">By Appointment</span></li>
+                        </ul>
+                    </div>
+
+                    <!-- Quick Contact Form -->
+                    <div class="glass-panel p-10 rounded-2xl h-fit border-t-4 border-t-gold-500 shadow-2xl">
+                        <h3 class="text-3xl font-heading font-bold mb-2 text-white">Send a Message</h3>
+                        <p class="text-gray-400 mb-8">Have a quick question? Shoot us a message.</p>
+                        <form onsubmit="event.preventDefault(); alert('Message sent! We will contact you shortly.');">
+                            <div class="mb-5">
+                                <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Name</label>
+                                <input type="text" class="w-full bg-dark-900 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-gold-500 transition" placeholder="John Doe" required>
+                            </div>
+                            <div class="mb-5">
+                                <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Phone or Email</label>
+                                <input type="text" class="w-full bg-dark-900 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-gold-500 transition" placeholder="520-555-0199" required>
+                            </div>
+                            <div class="mb-8">
+                                <label class="block text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Message</label>
+                                <textarea rows="4" class="w-full bg-dark-900 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-gold-500 transition resize-none" placeholder="How can we help?" required></textarea>
+                            </div>
+                            <button type="submit" class="w-full bg-gold-500 hover:bg-gold-400 text-black py-4 rounded-lg font-bold uppercase tracking-wide transition shadow-lg shadow-gold-500/20">
+                                Send Message
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- GLOBAL GOOGLE MAP -->
+    <div class="w-full h-96 relative grayscale hover:grayscale-0 transition duration-700 ease-in-out border-y border-gray-800">
+        <iframe 
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3356.123512395724!2d-111.523091!3d32.969641!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x872a0833a41cd2f9%3A0x6b77c5b6b6c6b6b6!2s980%20S%20Arizona%20Blvd%20B-1%2C%20Coolidge%2C%20AZ%2085128!5e0!3m2!1sen!2sus!4v1700000000000!5m2!1sen!2sus" 
+            width="100%" 
+            height="100%" 
+            style="border:0;" 
+            allowfullscreen="" 
+            loading="lazy" 
+            referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+        <div class="absolute inset-0 pointer-events-none shadow-[inset_0_0_50px_rgba(11,15,25,1)]"></div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-dark-900 pt-20 pb-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+                <div class="col-span-1 md:col-span-2">
+                    <span class="font-heading font-black text-3xl tracking-tighter uppercase text-white mb-6 block">Dad Bod <span class="text-gold-500">Garage</span></span>
+                    <p class="text-gray-400 mb-6 text-lg max-w-md">Diagnostics, not guessing. We provide premium auto repair for daily drivers, fleets, RVs, and classic cars in Coolidge, AZ.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 rounded-full bg-dark-800 flex items-center justify-center text-gray-400 hover:bg-gold-500 hover:text-black transition border border-gray-700 hover:border-gold-500"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-dark-800 flex items-center justify-center text-gray-400 hover:bg-gold-500 hover:text-black transition border border-gray-700 hover:border-gold-500"><i class="fa-brands fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-6 uppercase tracking-widest text-sm text-gold-500">Quick Links</h4>
+                    <ul class="space-y-3 text-gray-400">
+                        <li><button onclick="navigate('home')" class="hover:text-white transition">Home</button></li>
+                        <li><button onclick="navigate('services')" class="hover:text-white transition">Our Services</button></li>
+                        <li><button onclick="navigate('about')" class="hover:text-white transition">About James</button></li>
+                        <li><button onclick="navigate('quote')" class="hover:text-white transition">Get an Estimate</button></li>
+                        <li><button onclick="navigate('contact')" class="hover:text-white transition">Contact</button></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-6 uppercase tracking-widest text-sm text-gold-500">We Fix It Right</h4>
+                    <ul class="space-y-3 text-gray-400">
+                        <li><i class="fa-solid fa-triangle-exclamation text-xs mr-2 text-dark-700"></i> Check Engine Lights</li>
+                        <li><i class="fa-solid fa-triangle-exclamation text-xs mr-2 text-dark-700"></i> Car Won't Start</li>
+                        <li><i class="fa-solid fa-triangle-exclamation text-xs mr-2 text-dark-700"></i> Strange Noises</li>
+                        <li><i class="fa-solid fa-triangle-exclamation text-xs mr-2 text-dark-700"></i> Brake Grinding</li>
+                        <li class="pt-2"><span class="text-gold-400 font-bold italic">Stopping you from wasting money.</span></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="flex flex-col md:flex-row justify-between items-center text-gray-600 text-sm border-t border-gray-800 pt-8">
+                <p>&copy; 2026 Dad Bod Garage. All rights reserved. Coolidge, AZ.</p>
+                <p class="mt-4 md:mt-0">Premium Auto Diagnostics & Precision Repair</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- INTERACTIVITY SCRIPT -->
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        // ================= PRELOADER LOGIC =================
+        window.addEventListener('load', () => {
+            const tl = gsap.timeline();
+            let counter = { val: 0 };
+            
+            tl.to(counter, {
+                val: 100,
+                roundProps: "val",
+                duration: 2.2,
+                ease: "power3.inOut",
+                onUpdate: function() {
+                    document.getElementById("loader-count").innerHTML = counter.val;
+                }
+            })
+            .to("#loader-text", { text: "DIAGNOSTIC COMPLETE", color: "#FBBF24", duration: 0.1 })
+            .to("#preloader", { yPercent: -100, duration: 0.8, ease: "power4.inOut", delay: 0.5 })
+            .fromTo(".gsap-hero", { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 1, stagger: 0.1, ease: "power3.out" }, "-=0.3")
+            .add(() => { initScrollTriggers(); });
+        });
+
+        // ================= CUSTOM CURSOR =================
+        const cursorDot = document.querySelector('.cursor-dot');
+        const cursorOutline = document.querySelector('.cursor-outline');
+        
+        window.addEventListener('mousemove', (e) => {
+            const posX = e.clientX;
+            const posY = e.clientY;
+            
+            cursorDot.style.left = `${posX}px`;
+            cursorDot.style.top = `${posY}px`;
+            
+            cursorOutline.animate({
+                left: `${posX}px`,
+                top: `${posY}px`
+            }, { duration: 150, fill: "forwards" });
+        });
+
+        const hoverElements = document.querySelectorAll('a, button, input, textarea');
+        hoverElements.forEach(el => {
+            el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+            el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+        });
+
+        // ================= GSAP SCROLL ANIMATIONS =================
+        function initScrollTriggers() {
+            // General Fade Ups
+            gsap.utils.toArray('.gsap-fade-up').forEach(element => {
+                gsap.fromTo(element, 
+                    { y: 40, opacity: 0 },
+                    { scrollTrigger: { trigger: element, start: "top 85%" }, y: 0, opacity: 1, duration: 0.8, ease: "power3.out" }
+                );
+            });
+
+            // Left/Right reveals
+            gsap.utils.toArray('.gsap-fade-right').forEach(element => {
+                gsap.fromTo(element, 
+                    { x: -50, opacity: 0 },
+                    { scrollTrigger: { trigger: element, start: "top 80%" }, x: 0, opacity: 1, duration: 0.8, ease: "power3.out" }
+                );
+            });
+            gsap.utils.toArray('.gsap-fade-left').forEach(element => {
+                gsap.fromTo(element, 
+                    { x: 50, opacity: 0 },
+                    { scrollTrigger: { trigger: element, start: "top 80%" }, x: 0, opacity: 1, duration: 0.8, ease: "power3.out" }
+                );
+            });
+
+            // Stagger Cards
+            ScrollTrigger.batch(".gsap-stagger-card", {
+                onEnter: batch => gsap.fromTo(batch, { y: 50, opacity: 0 }, { y: 0, opacity: 1, stagger: 0.15, duration: 0.8, ease: "power3.out" }),
+                start: "top 85%"
+            });
+
+            // Process Steps
+            ScrollTrigger.batch(".gsap-process", {
+                onEnter: batch => gsap.fromTo(batch, { scale: 0.8, opacity: 0 }, { scale: 1, opacity: 1, stagger: 0.2, duration: 0.6, ease: "back.out(1.7)" }),
+                start: "top 85%"
+            });
+
+            // Review Cards
+            ScrollTrigger.batch(".gsap-stagger-review", {
+                onEnter: batch => gsap.fromTo(batch, { y: 30, opacity: 0 }, { y: 0, opacity: 1, stagger: 0.15, duration: 0.8, ease: "power2.out" }),
+                start: "top 90%"
+            });
+        }
+
+        // ================= SPA NAVIGATION LOGIC =================
+        function navigate(pageId) {
+            // Kill existing scroll triggers to prevent glitching on page swap
+            ScrollTrigger.getAll().forEach(t => t.kill());
+
+            // Hide all pages
+            document.querySelectorAll('.page-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Show target page
+            const targetPage = document.getElementById(pageId);
+            targetPage.classList.add('active');
+            
+            // Smooth reveal for new page
+            gsap.fromTo(targetPage, {opacity: 0, y: 15}, {opacity: 1, y: 0, duration: 0.4});
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            
+            // Close mobile menu if open
+            document.getElementById('mobile-menu').classList.add('hidden');
+            
+            // Refresh ScrollTrigger calculations for new layout
+            setTimeout(() => { ScrollTrigger.refresh(); initScrollTriggers(); }, 100);
+        }
+
+        // Mobile Menu Toggle
+        document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+    </script>
+</body>
+</html>

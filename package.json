@@ -1,0 +1,15 @@
+{
+  "name": "dad-bod-garage-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Dynamic multi-page Dad Bod Garage website with local quote/contact submission API.",
+  "main": "server/server.js",
+  "scripts": {
+    "dev": "node server/server.js",
+    "start": "node server/server.js",
+    "check": "node --check server/server.js && node --check src/main.js && node --check src/data/site.js && node --check src/components/layout.js && node --check src/components/home.js && node --check src/components/services.js && node --check src/components/quote.js && node --check src/components/about.js && node --check src/components/contact.js && node --check src/components/shared.js && node --check src/lib/forms.js"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
