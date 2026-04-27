@@ -153,8 +153,8 @@ export function Footer() {
         </div>
         <div class="footer-bottom">
           <span>&copy; 2026 Dad Bod Garage. All rights reserved.</span>
-          <span>Premium Auto Diagnostics & Precision Repair</span>
-          <span class="footer-credit">Made By Creative Webflow Co.</span>
+          <a href="https://creative-webflow.site/" target="_blank" rel="noopener" class="footer-designer-link">Made By Creative Webflow Co.</a>
+          <span class="text-muted">Premium Auto Diagnostics & Precision Repair</span>
         </div>
       </div>
     </footer>
