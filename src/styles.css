@@ -167,11 +167,12 @@ img {
   aspect-ratio: 1;
   margin-bottom: clamp(1.7rem, 5vw, 2.5rem);
   border-radius: 50%;
-  object-fit: cover;
-  object-position: center 53%;
+  object-fit: contain;
+  object-position: center;
+  padding: 8px;
   background: #fff;
-  opacity: 0.72;
-  filter: contrast(1.15);
+  opacity: 0.85;
+  filter: contrast(1.1);
   animation: pulse 2s infinite alternate;
 }
 
@@ -232,24 +233,35 @@ img {
   z-index: 9000;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
   pointer-events: none;
+  background: var(--gold);
+  transform: translateY(100%);
 }
 
-.transition-panel {
-  width: 100%;
-  height: 50vh;
-  background: linear-gradient(180deg, #ffc83d, var(--gold-dark));
-  transform: scaleY(0);
-  transform-origin: top;
-  transition: transform 0.6s cubic-bezier(0.85, 0, 0.15, 1);
+.transition-text {
+  font-family: "Montserrat", sans-serif;
+  color: #111827;
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  opacity: 0;
+  text-align: center;
 }
 
-.transition-panel.bottom {
-  transform-origin: bottom;
-}
-
-.page-transition.is-transitioning .transition-panel {
-  transform: scaleY(1);
+.transition-subtext {
+  position: absolute;
+  bottom: 2rem;
+  left: 2rem;
+  font-family: "Montserrat", sans-serif;
+  color: rgba(17, 24, 39, 0.6);
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  opacity: 0;
 }
 
 .preloader-card {
@@ -531,8 +543,9 @@ p {
 .brand-logo {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: center 53%;
+  object-fit: contain;
+  object-position: center;
+  padding: 4px;
   transform: none;
 }
 
@@ -669,9 +682,10 @@ p {
 .mobile-menu-button::before {
   content: "";
   position: absolute;
-  inset: -1px;
+  inset: -2px;
   border-radius: inherit;
-  background: linear-gradient(45deg, rgba(245, 179, 1, 0.95), rgba(217, 119, 6, 0.9), rgba(34, 211, 238, 0.7));
+  background: linear-gradient(45deg, #f5b301, #d97706, #22d3ee, #f5b301);
+  background-size: 400% 400%;
   opacity: 0;
   transition: opacity 0.3s ease;
   z-index: -1;
@@ -682,12 +696,13 @@ p {
 .contact-card:hover::before,
 .mobile-menu-button:hover::before {
   opacity: 1;
-  animation: spinBorder 2.2s linear infinite;
+  animation: gradientSpin 3s linear infinite;
 }
 
-@keyframes spinBorder {
-  0% { filter: hue-rotate(0deg); }
-  100% { filter: hue-rotate(360deg); }
+@keyframes gradientSpin {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
 .btn:hover {
@@ -1008,15 +1023,16 @@ p {
 .marquee-track {
   display: flex;
   width: max-content;
-  padding: clamp(0.9rem, 2vw, 1.2rem) 0;
+  padding: clamp(1.2rem, 3vw, 1.8rem) 0;
   will-change: transform;
-  animation: scrollMarquee 18s linear infinite;
+  animation: scrollMarquee 25s linear infinite;
 }
 
 .marquee-group {
   display: flex;
   flex: 0 0 auto;
   align-items: center;
+  transform: translateZ(0); /* Hardware acceleration */
 }
 
 .marquee-track span {
@@ -1025,21 +1041,16 @@ p {
   flex: 0 0 auto;
   color: #111827;
   font-family: "Montserrat", system-ui, sans-serif;
-  font-size: clamp(1.7rem, 4vw, 3rem);
+  font-size: clamp(2rem, 5vw, 4rem);
   font-weight: 900;
   line-height: 1;
   text-transform: uppercase;
-  margin-right: clamp(2rem, 5vw, 3.2rem);
+  margin-right: clamp(3rem, 6vw, 5rem);
 }
 
 @keyframes scrollMarquee {
-  from {
-    transform: translateX(0);
-  }
-
-  to {
-    transform: translateX(-50%);
-  }
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
 }
 
 .metric-strip {

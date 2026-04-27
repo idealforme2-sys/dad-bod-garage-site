@@ -51,41 +51,56 @@ function navigateToRoute(route, options = {}) {
     return;
   }
 
-  const transition = document.getElementById("transition-wrapper");
-  const canTransition = transition && !reducedMotion.matches;
+  const transitionEl = document.getElementById("transition-wrapper");
+  const transitionText = transitionEl.querySelector(".transition-text");
+  const transitionSubtext = transitionEl.querySelector(".transition-subtext");
+  const canTransition = transitionEl && typeof gsap !== "undefined" && !reducedMotion.matches;
+  
   isRouting = true;
   pendingRoute = nextRoute;
 
   if (canTransition) {
-    transition.classList.add("is-transitioning");
+    const tl = gsap.timeline({
+      onComplete: () => {
+        // Complete the transition
+        gsap.to(transitionEl, { y: "-100%", duration: 0.6, ease: "expo.inOut", delay: 0.5, onComplete: () => {
+          gsap.set(transitionEl, { y: "100%" });
+          isRouting = false;
+          pendingRoute = null;
+        }});
+        
+        gsap.to([transitionText, transitionSubtext], { opacity: 0, duration: 0.3, delay: 0.4 });
+      }
+    });
+
+    // 1. Slide orange panel down
+    tl.to(transitionEl, { y: "0%", duration: 0.6, ease: "expo.inOut" })
+      // 2. Show text
+      .to([transitionText, transitionSubtext], { opacity: 1, duration: 0.4, stagger: 0.1 }, "-=0.2")
+      // 3. Switch content while covered
+      .add(() => {
+        if (options.prefill) quotePrefill = options.prefill;
+        currentRoute = nextRoute;
+        if (options.updateHash && window.location.hash !== `#${nextRoute}`) {
+          window.history.pushState(null, "", `#${nextRoute}`);
+        }
+        render();
+        window.scrollTo({ top: 0, behavior: "auto" });
+      }, "-=0.1");
+
+    return;
   }
 
-  window.setTimeout(() => {
-    if (options.prefill) {
-      quotePrefill = options.prefill;
-    }
-
-    currentRoute = nextRoute;
-
-    if (options.updateHash && window.location.hash !== `#${nextRoute}`) {
-      window.history.pushState(null, "", `#${nextRoute}`);
-    }
-
-    render();
-    window.scrollTo({ top: 0, behavior: "auto" });
-
-    if (canTransition) {
-      transition.classList.remove("is-transitioning");
-      window.setTimeout(() => {
-        isRouting = false;
-        pendingRoute = null;
-      }, 600);
-      return;
-    }
-
-    isRouting = false;
-    pendingRoute = null;
-  }, canTransition ? 600 : 0);
+  // Fallback for reduced motion or if GSAP is missing
+  if (options.prefill) quotePrefill = options.prefill;
+  currentRoute = nextRoute;
+  if (options.updateHash && window.location.hash !== `#${nextRoute}`) {
+    window.history.pushState(null, "", `#${nextRoute}`);
+  }
+  render();
+  window.scrollTo({ top: 0, behavior: "auto" });
+  isRouting = false;
+  pendingRoute = null;
 }
 
 function routeMarkup() {
