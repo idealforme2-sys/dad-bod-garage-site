@@ -728,10 +728,10 @@ p {
   align-items: center;
   background-color: var(--bg);
   background-image:
-    linear-gradient(90deg, rgba(11, 15, 25, 0.98) 0%, rgba(11, 15, 25, 0.82) 48%, rgba(11, 15, 25, 0.65) 100%),
+    linear-gradient(90deg, rgba(11, 15, 25, 0.96) 0%, rgba(11, 15, 25, 0.72) 48%, rgba(11, 15, 25, 0.55) 100%),
     url("/images to use/Coolidgerepair.jpg");
-  background-size: 280%; /* Extreme zoom to crop out all billboard text */
-  background-position: 95% 85%; /* Focus on the building facade away from text */
+  background-size: 145%; /* Scaled up to allow cropping out the top text */
+  background-position: center 65%; /* Moved visible area down to hide the top text above the hero */
   background-repeat: no-repeat;
   overflow: hidden;
 }
@@ -2184,6 +2184,7 @@ input:focus,
   border-radius: 50%;
   color: var(--gold);
   background: rgba(245, 179, 1, 0.1);
+  flex-shrink: 0;
 }
 
 .contact-card-row {
@@ -2442,40 +2443,35 @@ input:focus,
   position: relative;
   display: inline-flex;
   align-items: center;
-  padding: 0.5rem 1.25rem;
-  color: var(--gold);
-  font-weight: 900;
+  color: #94a3b8;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.2em;
-  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  font-size: 0.75rem;
   text-decoration: none;
-  border: 1px solid rgba(245, 179, 1, 0.4);
-  border-radius: 100px;
-  background: rgba(245, 179, 1, 0.05);
-  box-shadow: 0 0 15px rgba(245, 179, 1, 0.1);
-  transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-  overflow: hidden;
+  transition: all 0.3s ease;
+  padding-bottom: 2px;
 }
 
-.footer-designer-link::before {
+.footer-designer-link::after {
   content: "";
   position: absolute;
-  inset: 0;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transform: translateX(-100%);
-  transition: transform 0.8s ease;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: linear-gradient(90deg, var(--gold), var(--cyan));
+  transition: width 0.4s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .footer-designer-link:hover {
-  color: #0b0f19;
-  background: var(--gold);
-  border-color: var(--gold);
-  box-shadow: 0 0 25px rgba(245, 179, 1, 0.4);
-  transform: translateY(-3px) scale(1.05);
+  color: white;
+  letter-spacing: 0.18em;
+  text-shadow: 0 0 12px rgba(245, 179, 1, 0.3);
 }
 
-.footer-designer-link:hover::before {
-  transform: translateX(100%);
+.footer-designer-link:hover::after {
+  width: 100%;
 }
 
 .mobile-cta {

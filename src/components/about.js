@@ -9,7 +9,6 @@ export function AboutPage() {
         <div class="container split">
           <div class="owner-portrait" data-animate data-animate-immediate>
             <img src="/images to use/meetus.jpg" alt="James, owner of Dad Bod Garage">
-            <div class="owner-portrait-badge">Coolidge, AZ</div>
           </div>
           <div class="owner-story" data-animate data-animate-immediate style="--delay:120ms">
             <span class="eyebrow">Meet The Owner</span>
