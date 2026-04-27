@@ -2159,6 +2159,7 @@ input:focus,
 
 .contact-card {
   display: flex;
+  align-items: flex-start;
   gap: 1rem;
   padding: 1rem;
   border: 1px solid var(--line);
@@ -2169,6 +2170,13 @@ input:focus,
   isolation: isolate;
   overflow: hidden;
   transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.contact-card span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  color: var(--text);
+  font-size: 0.95rem;
 }
 
 .contact-card:hover {
