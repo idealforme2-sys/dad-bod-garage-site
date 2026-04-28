@@ -28,6 +28,7 @@ let introReady = false;
 let isRouting = false;
 let pendingRoute = null;
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+const routeTransitionMs = 650;
 
 function getRouteFromHash() {
   const route = window.location.hash.replace("#", "");
@@ -36,6 +37,16 @@ function getRouteFromHash() {
 
 function setRoute(route, options = {}) {
   navigateToRoute(route, { ...options, updateHash: true });
+}
+
+function applyRouteChange(route, options = {}) {
+  if (options.prefill) quotePrefill = options.prefill;
+  currentRoute = route;
+  if (options.updateHash && window.location.hash !== `#${route}`) {
+    window.history.pushState(null, "", `#${route}`);
+  }
+  render();
+  window.scrollTo({ top: 0, behavior: "auto" });
 }
 
 function navigateToRoute(route, options = {}) {
@@ -52,12 +63,13 @@ function navigateToRoute(route, options = {}) {
   }
 
   const transitionEl = document.getElementById("transition-wrapper");
-  const canTransition = transitionEl && typeof gsap !== "undefined" && !reducedMotion.matches;
+  const canGsapTransition = transitionEl && typeof gsap !== "undefined" && !reducedMotion.matches;
+  const canCssTransition = transitionEl && !reducedMotion.matches;
   
   isRouting = true;
   pendingRoute = nextRoute;
 
-  if (canTransition) {
+  if (canGsapTransition) {
     const tl = gsap.timeline({
       onComplete: () => {
         // Complete the transition
@@ -74,26 +86,36 @@ function navigateToRoute(route, options = {}) {
     tl.to(transitionEl, { scaleY: 1, duration: 0.7, ease: "power4.inOut" })
       // 2. Switch content while covered
       .add(() => {
-        if (options.prefill) quotePrefill = options.prefill;
-        currentRoute = nextRoute;
-        if (options.updateHash && window.location.hash !== `#${nextRoute}`) {
-          window.history.pushState(null, "", `#${nextRoute}`);
-        }
-        render();
-        window.scrollTo({ top: 0, behavior: "auto" });
+        applyRouteChange(nextRoute, options);
       });
 
     return;
   }
 
-  // Fallback for reduced motion or if GSAP is missing (Brave compatibility)
-  if (options.prefill) quotePrefill = options.prefill;
-  currentRoute = nextRoute;
-  if (options.updateHash && window.location.hash !== `#${nextRoute}`) {
-    window.history.pushState(null, "", `#${nextRoute}`);
+  if (canCssTransition) {
+    transitionEl.classList.remove("is-revealing");
+    void transitionEl.offsetWidth;
+    transitionEl.classList.add("is-covering");
+
+    window.setTimeout(() => {
+      applyRouteChange(nextRoute, options);
+      transitionEl.classList.remove("is-covering");
+      transitionEl.classList.add("is-revealing");
+      requestAnimationFrame(() => {
+        transitionEl.classList.remove("is-revealing");
+      });
+
+      window.setTimeout(() => {
+        isRouting = false;
+        pendingRoute = null;
+      }, routeTransitionMs);
+    }, routeTransitionMs);
+
+    return;
   }
-  render();
-  window.scrollTo({ top: 0, behavior: "auto" });
+
+  // Fallback for reduced motion or if GSAP is missing (Brave compatibility)
+  applyRouteChange(nextRoute, options);
   isRouting = false;
   pendingRoute = null;
 }

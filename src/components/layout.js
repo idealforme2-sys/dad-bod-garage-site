@@ -28,14 +28,15 @@ export function Header(route) {
     `${icon("fa-location-dot")} 778 N Main St, Florence`,
     `${icon("fa-wrench")} Meet James + Talk Shop`
   ];
-  const ticker = [...eventItems, ...eventItems].map((item) => `
+  const tickerGroup = eventItems.map((item) => `
     <span class="event-banner-item">${item}</span>
   `).join("");
 
   return `
     <div class="event-banner" data-event-banner>
       <div class="event-banner-track">
-        ${ticker}
+        <div class="event-banner-group">${tickerGroup}</div>
+        <div class="event-banner-group" aria-hidden="true">${tickerGroup}</div>
       </div>
     </div>
     <header class="site-header">
