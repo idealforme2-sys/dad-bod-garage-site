@@ -1299,6 +1299,7 @@ p {
   height: 54px;
   display: grid;
   place-items: center;
+  flex-shrink: 0;
   margin-bottom: 1.2rem;
   border: 1px solid rgba(245, 179, 1, 0.32);
   border-radius: 50%;
@@ -1871,11 +1872,17 @@ p {
 
 .offer {
   display: flex;
-  gap: 1rem;
+  align-items: flex-start;
+  gap: 1.25rem;
   padding: 1.2rem;
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background: rgba(17, 24, 39, 0.86);
+}
+
+.offer .card-icon {
+  margin-bottom: 0;
+  margin-top: 0.15rem;
 }
 
 .review {
